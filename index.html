@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slider and Smooth Movement</title>
+  <style>
+    .slider {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .slider__input {
+      width: 100%;
+    }
+
+    .slider__image {
+      display: block;
+      margin: 20px auto;
+      max-width: 100%;
+    }
+
+    #box {
+      width: 50px;
+      height: 50px;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+
+<div class="slider">
+  <input type="range" min="1" max="100" value="50" class="slider__input">
+  <img src="https://via.placeholder.com/300x300" class="slider__image">
+</div>
+
+<div id="box"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21"></script>
+<script>
+  // Завдання 1: Слайдер з використанням debounce
+  const sliderInput = document.querySelector('.slider__input');
+  const sliderImage = document.querySelector('.slider__image');
+
+  const updateImageSize = _.debounce(() => {
+    const sliderValue = sliderInput.value;
+    const imageSize = 100 + parseInt(sliderValue); // Можете змінити логіку зміни розміру відповідно до ваших потреб
+    sliderImage.style.width = `${imageSize}%`;
+  }, 300); // Час затримки в мілісекундах (в даному випадку 300мс)
+
+  sliderInput.addEventListener('input', updateImageSize);
+
+  // Завдання 2: Плавне переміщення об'єкту при русі мишкою з використанням debounce
+  const box = document.getElementById('box');
+
+  const smoothMoveBox = _.debounce((event) => {
+    const x = event.clientX - box.clientWidth / 2;
+    const y = event.clientY - box.clientHeight / 2;
+    box.style.transform = `translate(${x}px, ${y}px)`;
+  }, 100); // Час затримки в мілісекундах (в даному випадку 100мс)
+
+  document.addEventListener('mousemove', smoothMoveBox);
+</script>
+
+</body>
+</html>
